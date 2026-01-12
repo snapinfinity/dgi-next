@@ -1,0 +1,201 @@
+"use client";
+
+import { useState } from "react";
+import WhiteHeader from "@/components/WhiteHeader";
+import Footer from "@/components/Footer";
+import SubscribeModal from "@/components/SubscribeModal";
+import PortalPopup from "@/components/PortalPopup";
+
+export default function ContactPage() {
+  const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log("Form submitted:", formData);
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <WhiteHeader />
+
+      {/* Content */}
+      <main className="max-w-[1280px] mx-auto px-6 lg:px-24 py-16">
+        {/* Page Header */}
+        <div className="mb-16">
+          <h1 className="text-5xl lg:text-6xl font-light text-gray-900 tracking-tight mb-4">
+            Contact Us
+          </h1>
+          <p className="text-lg text-gray-600 max-w-xl">
+            Let's create something extraordinary together. Reach out to discuss
+            your next interior design project.
+          </p>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-gray-900 mb-16" />
+
+        {/* Contact Form & Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Form */}
+          <div>
+            <h2 className="text-3xl font-light text-gray-900 mb-6">
+              Get in Touch
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Have a project in mind? We'd love to hear from you. Fill out the
+              form and we'll get back to you as soon as possible.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  placeholder="Your name"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="your.email@example.com"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+971 00 000 0000"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="How can we help?"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Tell us about your project..."
+                  rows={5}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="px-8 py-4 bg-decograph-red text-white font-medium rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">
+                Office Location
+              </h3>
+              <div className="text-gray-600 space-y-1">
+                <p>Business Bay</p>
+                <p>Dubai, United Arab Emirates</p>
+                <p>P.O. Box 123456</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">Email</h3>
+              <div className="text-gray-600 space-y-1">
+                <p>info@decograph.ae</p>
+                <p>hello@decograph.ae</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">Phone</h3>
+              <div className="text-gray-600 space-y-1">
+                <p>+971 4 123 4567</p>
+                <p>+971 50 123 4567</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-medium text-gray-900 mb-3">
+                Business Hours
+              </h3>
+              <div className="text-gray-600 space-y-1">
+                <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p>Saturday: 10:00 AM - 2:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer onSubscribeClick={() => setIsSubscribeOpen(true)} />
+
+      {/* Subscribe Modal */}
+      {isSubscribeOpen && (
+        <PortalPopup
+          overlayColor="rgba(0, 0, 0, 0.8)"
+          placement="Centered"
+          onOutsideClick={() => setIsSubscribeOpen(false)}
+        >
+          <SubscribeModal onClose={() => setIsSubscribeOpen(false)} />
+        </PortalPopup>
+      )}
+    </div>
+  );
+}
