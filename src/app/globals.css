@@ -1,10 +1,144 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Deuterium Variable Font */
+@font-face {
+  font-family: "Deuterium Variable";
+  src: url("/fonts/deuterium-variable/Deuterium_Variable.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Helvetica Neue Font Family */
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueUltraLight.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueUltraLightItal.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-Thin.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-ThinItalic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueLight.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueLightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-Roman.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueItalic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeueBoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-Heavy.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-HeavyItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/fonts/helvetica-neue/HelveticaNeue-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* High Tower Font */
+@font-face {
+  font-family: "High Tower";
+  src: url("/fonts/high-tower/HTOWERT.TTF") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Decograph Custom Colors */
 @theme inline {
   --color-decograph-red: #ed3538;
   --font-serif: "Georgia", "Times New Roman", serif;
+  --font-deuterium: "Deuterium Variable", sans-serif;
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-hightower: "High Tower", Georgia, serif;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -125,7 +259,145 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Deuterium Font Utility Classes */
+.deuterium-thin {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 100;
+}
+
+.deuterium-extralight {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 200;
+}
+
+.deuterium-light {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 300;
+}
+
+.deuterium-regular {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 400;
+}
+
+.deuterium-medium {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 500;
+}
+
+.deuterium-semibold {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 600;
+}
+
+.deuterium-bold {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 700;
+}
+
+.deuterium-extrabold {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 800;
+}
+
+.deuterium-black {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 900;
+}
+
+/* Helvetica Neue Font Utility Classes */
+.helvetica-ultralight {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 100;
+}
+
+.helvetica-thin {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 200;
+}
+
+.helvetica-light {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.helvetica-regular {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+.helvetica-medium {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+}
+
+.helvetica-bold {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+
+.helvetica-heavy {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+}
+
+.helvetica-black {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+}
+
+/* High Tower Font Utility Class */
+.hightower {
+  font-family: "High Tower", Georgia, serif;
+  font-weight: 400;
+}
+
+/* About Page Heading Style */
+.about-heading {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 480;
+  font-size: 40px;
+}
+
+/* About Page Body Text Style */
+.about-text {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+/* Service Item Title */
+.service-title {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+}
+
+/* Service Item Description */
+.service-description {
+  font-family: "Deuterium Variable", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+/* Hero Carousel Animation */
+.carousel-track {
+  animation: carousel-scroll 120s linear infinite;
+  width: max-content;
+}
+
+@keyframes carousel-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
   }
 }
