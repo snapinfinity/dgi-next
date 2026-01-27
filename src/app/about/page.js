@@ -1,6 +1,6 @@
 "use client";
 
-import WhiteHeader from "@/components/WhiteHeader";
+import Header from "@/components/Header";
 import AboutHeroSection from "@/components/AboutHeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import WhyDecographSection from "@/components/WhyDecographSection";
@@ -10,9 +10,9 @@ import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-white pt-14 md:pt-16">
       {/* Header */}
-      <WhiteHeader />
+      <Header isWhiteBg={true} isDark={true} />
 
       {/* About Hero Section */}
       <AboutHeroSection />

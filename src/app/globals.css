@@ -386,6 +386,20 @@
   font-size: 15px;
 }
 
+/* Portfolio Hover Title 1 (Category) */
+.portfolio-title1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+/* Portfolio Hover Title 2 (Project Name) */
+.portfolio-title2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+}
+
 /* Hero Carousel Animation */
 .carousel-track {
   animation: carousel-scroll 120s linear infinite;
@@ -399,5 +413,36 @@
 
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Modal Animations */
+.animate-slideUp {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

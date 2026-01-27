@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import WhiteHeader from "@/components/WhiteHeader";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
@@ -9,60 +10,60 @@ import PortalPopup from "@/components/PortalPopup";
 // All portfolio images - simulating different project photos
 const allImages = [
   // Corporate Offices
-  { seed: "corp1", category: "office" },
-  { seed: "corp2", category: "office" },
-  { seed: "corp3", category: "office" },
-  { seed: "corp4", category: "office" },
-  { seed: "corp5", category: "office" },
-  { seed: "corp6", category: "office" },
-  { seed: "corp7", category: "office" },
-  { seed: "corp8", category: "office" },
-  { seed: "corp9", category: "office" },
-  { seed: "corp10", category: "office" },
+  { seed: "corp1", category: "office", slug: "corp-office-1" },
+  { seed: "corp2", category: "office", slug: "corp-office-2" },
+  { seed: "corp3", category: "office", slug: "corp-office-3" },
+  { seed: "corp4", category: "office", slug: "corp-office-4" },
+  { seed: "corp5", category: "office", slug: "corp-office-5" },
+  { seed: "corp6", category: "office", slug: "corp-office-6" },
+  { seed: "corp7", category: "office", slug: "corp-office-7" },
+  { seed: "corp8", category: "office", slug: "corp-office-8" },
+  { seed: "corp9", category: "office", slug: "corp-office-9" },
+  { seed: "corp10", category: "office", slug: "corp-office-10" },
   // Retail
-  { seed: "retail1", category: "retail" },
-  { seed: "retail2", category: "retail" },
-  { seed: "retail3", category: "retail" },
-  { seed: "retail4", category: "retail" },
-  { seed: "retail5", category: "retail" },
-  { seed: "retail6", category: "retail" },
-  { seed: "retail7", category: "retail" },
-  { seed: "retail8", category: "retail" },
-  { seed: "retail9", category: "retail" },
-  { seed: "retail10", category: "retail" },
+  { seed: "retail1", category: "retail", slug: "retail-space-1" },
+  { seed: "retail2", category: "retail", slug: "retail-space-2" },
+  { seed: "retail3", category: "retail", slug: "retail-space-3" },
+  { seed: "retail4", category: "retail", slug: "retail-space-4" },
+  { seed: "retail5", category: "retail", slug: "retail-space-5" },
+  { seed: "retail6", category: "retail", slug: "retail-space-6" },
+  { seed: "retail7", category: "retail", slug: "retail-space-7" },
+  { seed: "retail8", category: "retail", slug: "retail-space-8" },
+  { seed: "retail9", category: "retail", slug: "retail-space-9" },
+  { seed: "retail10", category: "retail", slug: "retail-space-10" },
   // Villas
-  { seed: "villa1", category: "villa" },
-  { seed: "villa2", category: "villa" },
-  { seed: "villa3", category: "villa" },
-  { seed: "villa4", category: "villa" },
-  { seed: "villa5", category: "villa" },
-  { seed: "villa6", category: "villa" },
-  { seed: "villa7", category: "villa" },
-  { seed: "villa8", category: "villa" },
-  { seed: "villa9", category: "villa" },
-  { seed: "villa10", category: "villa" },
+  { seed: "villa1", category: "villa", slug: "villa-1" },
+  { seed: "villa2", category: "villa", slug: "villa-2" },
+  { seed: "villa3", category: "villa", slug: "villa-3" },
+  { seed: "villa4", category: "villa", slug: "villa-4" },
+  { seed: "villa5", category: "villa", slug: "villa-5" },
+  { seed: "villa6", category: "villa", slug: "villa-6" },
+  { seed: "villa7", category: "villa", slug: "villa-7" },
+  { seed: "villa8", category: "villa", slug: "villa-8" },
+  { seed: "villa9", category: "villa", slug: "villa-9" },
+  { seed: "villa10", category: "villa", slug: "villa-10" },
   // Entertainment
-  { seed: "ent1", category: "entertainment" },
-  { seed: "ent2", category: "entertainment" },
-  { seed: "ent3", category: "entertainment" },
-  { seed: "ent4", category: "entertainment" },
-  { seed: "ent5", category: "entertainment" },
-  { seed: "ent6", category: "entertainment" },
-  { seed: "ent7", category: "entertainment" },
-  { seed: "ent8", category: "entertainment" },
-  { seed: "ent9", category: "entertainment" },
-  { seed: "ent10", category: "entertainment" },
+  { seed: "ent1", category: "entertainment", slug: "entertainment-1" },
+  { seed: "ent2", category: "entertainment", slug: "entertainment-2" },
+  { seed: "ent3", category: "entertainment", slug: "entertainment-3" },
+  { seed: "ent4", category: "entertainment", slug: "entertainment-4" },
+  { seed: "ent5", category: "entertainment", slug: "entertainment-5" },
+  { seed: "ent6", category: "entertainment", slug: "entertainment-6" },
+  { seed: "ent7", category: "entertainment", slug: "entertainment-7" },
+  { seed: "ent8", category: "entertainment", slug: "entertainment-8" },
+  { seed: "ent9", category: "entertainment", slug: "entertainment-9" },
+  { seed: "ent10", category: "entertainment", slug: "entertainment-10" },
   // F&B
-  { seed: "cafe1", category: "fnb" },
-  { seed: "cafe2", category: "fnb" },
-  { seed: "cafe3", category: "fnb" },
-  { seed: "cafe4", category: "fnb" },
-  { seed: "cafe5", category: "fnb" },
-  { seed: "cafe6", category: "fnb" },
-  { seed: "cafe7", category: "fnb" },
-  { seed: "cafe8", category: "fnb" },
-  { seed: "cafe9", category: "fnb" },
-  { seed: "cafe10", category: "fnb" },
+  { seed: "cafe1", category: "fnb", slug: "cafe-1" },
+  { seed: "cafe2", category: "fnb", slug: "cafe-2" },
+  { seed: "cafe3", category: "fnb", slug: "cafe-3" },
+  { seed: "cafe4", category: "fnb", slug: "cafe-4" },
+  { seed: "cafe5", category: "fnb", slug: "cafe-5" },
+  { seed: "cafe6", category: "fnb", slug: "cafe-6" },
+  { seed: "cafe7", category: "fnb", slug: "cafe-7" },
+  { seed: "cafe8", category: "fnb", slug: "cafe-8" },
+  { seed: "cafe9", category: "fnb", slug: "cafe-9" },
+  { seed: "cafe10", category: "fnb", slug: "cafe-10" },
 ];
 
 // Generate masonry layout with varying sizes
@@ -104,9 +105,10 @@ export default function PortfolioPage() {
             style={{ columnFill: "balance" }}
           >
             {layoutImages.map((img, idx) => (
-              <div
+              <Link
                 key={idx}
-                className="relative mb-4 break-inside-avoid overflow-hidden rounded-lg group cursor-pointer"
+                href={`/portfolio/${img.slug}`}
+                className="relative mb-4 break-inside-avoid overflow-hidden rounded-lg group cursor-pointer block"
               >
                 <img
                   src={`https://picsum.photos/seed/${img.seed}/${img.w}/${img.h}`}
@@ -115,7 +117,7 @@ export default function PortfolioPage() {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

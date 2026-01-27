@@ -4,9 +4,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutSection() {
+export default function AboutSectionDesktop() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
+  const triggerRef = useRef(null);
 
   const text1 = "Decograph Interior Design Studio is a full-service interior design and fit-out company specializing in residential, commercial, retail, and hospitality spaces.";
   const text2 = "We provide end-to-end solutions including interior design, civil works, custom joinery, and complete MEP and HVAC services. Our work style combines modern, clean aesthetics with strong functionality and technical precision. Every project is executed with meticulous attention to detail, structured project management, and strict quality standards. At Decograph, we create refined, durable, and efficient interiors that enhance the way spaces are experienced.";
@@ -25,12 +26,11 @@ export default function AboutSection() {
 
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "center center", // Animate as it enters the viewport
-        scrub: 1,      // Smooth scrubbing
+        trigger: triggerRef.current, 
+        start: "top top",            
+        end: () => "+=" + (window.innerHeight * 0.75),        
+        scrub: 0.5,
         onUpdate: (self) => {
-          // Calculate how many characters should be lit based on scroll progress
           const progress = self.progress;
           const litCount = Math.floor(progress * totalChars);
           
@@ -43,26 +43,26 @@ export default function AboutSection() {
           });
         }
       });
-    }, sectionRef);
+    }, triggerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="z-0 py-32 px-6 lg:px-24 overflow-hidden h-screen flex items-center justify-center bg-decograph-red">
-
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto text-center">
-        <p ref={textRef} className="font-serif text-xl md:text-2xl lg:text-4xl leading-relaxed">
-          <span>
-            {splitText(text1)}
-          </span>
-          {" "}
-          <span>
-            {splitText(text2)}
-          </span>
-        </p>
+    // Wrapper that defines the flow height.
+    <div ref={triggerRef} className="relative z-0 h-[400vh]">
+      <div 
+        ref={sectionRef} 
+        className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-decograph-red"
+      >
+        <div className="relative max-w-7xl mx-auto text-center px-6 lg:px-24">
+          <p ref={textRef} className="font-serif text-xl md:text-2xl lg:text-4xl leading-relaxed">
+            <span>{splitText(text1)}</span>
+            {" "}
+            <span>{splitText(text2)}</span>
+          </p>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

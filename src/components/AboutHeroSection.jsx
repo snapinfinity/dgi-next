@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function AboutHeroSection() {
   return (
     <section className="border-b border-decograph-red">
-      <div className="py-24 px-6 lg:px-24 max-w-[1440px] mx-auto">
+      <div className="py-10 md:py-24 px-6 lg:px-24 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left - Text Content */}
         <div>

@@ -3,12 +3,12 @@
 import Link from "next/link";
 
 const portfolioItems = [
-  { title: "JLT Office", category: "Corporate Office", seed: "jlt" },
-  { title: "White Hearts", category: "Entertainment", seed: "whiteheart" },
-  { title: "Executive Residence", category: "Villa", seed: "villa" },
-  { title: "Realmadrid Office", category: "Retail", seed: "realmadrid" },
-  { title: "Academy Cafe", category: "Food and Beverages", seed: "cafe" },
-  { title: "Jazz", category: "Wellness", seed: "jazz" },
+  { slug: "jlt-office", title: "JLT Office", category: "Corporate Office", seed: "jlt" },
+  { slug: "white-hearts", title: "White Hearts", category: "Entertainment", seed: "whiteheart" },
+  { slug: "executive-residence", title: "Executive Residence", category: "Villa", seed: "villa" },
+  { slug: "realmadrid-office", title: "Realmadrid Office", category: "Retail", seed: "realmadrid" },
+  { slug: "academy-cafe", title: "Academy Cafe", category: "Food and Beverages", seed: "cafe" },
+  { slug: "jazz", title: "Jazz", category: "Wellness", seed: "jazz" },
 ];
 
 export default function PortfolioPreviewSection() {
@@ -25,18 +25,19 @@ export default function PortfolioPreviewSection() {
             craftsmanship, and attention to detail across diverse spaces.
           </p>
         </div>
-        <Link
+
+        <Link 
           href="/portfolio"
-          className="text-decograph-red hover:underline transition-all"
+          className="text-decograph-red hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
         >
-          View All
+          View All Projects →
         </Link>
       </div>
 
       {/* Portfolio Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {portfolioItems.map((item, idx) => (
-          <div key={idx} className="group cursor-pointer">
+          <Link key={idx} href={`/portfolio/${item.slug}`} className="group cursor-pointer block">
             {/* Image */}
             <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden mb-4">
               <img
@@ -54,7 +55,7 @@ export default function PortfolioPreviewSection() {
             <p className="text-sm text-gray-900/60 font-light">
               {item.category}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

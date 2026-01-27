@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import WhiteHeader from "@/components/WhiteHeader";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
 import PortalPopup from "@/components/PortalPopup";
+import { submitEnquiry } from "@/lib/firestore";
 
 export default function ContactPage() {
   const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -21,16 +24,34 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      await submitEnquiry(formData);
+      setSubmitStatus("success");
+      // Reset form on success
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error submitting enquiry:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white pt-20">
       {/* Header */}
-      <WhiteHeader />
+      <Header isWhiteBg={true} isDark={true} />
 
       {/* Content */}
       <main className="max-w-[1280px] mx-auto px-6 lg:px-24 py-16">
@@ -133,10 +154,22 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="px-8 py-4 bg-decograph-red text-white font-medium rounded-lg hover:bg-red-600 transition-colors"
+                disabled={isSubmitting}
+                className="px-8 py-4 bg-decograph-red text-white font-medium rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
+
+              {submitStatus === "success" && (
+                <p className="text-green-600 mt-4">
+                  Thank you! Your message has been sent successfully.
+                </p>
+              )}
+              {submitStatus === "error" && (
+                <p className="text-red-600 mt-4">
+                  Something went wrong. Please try again later.
+                </p>
+              )}
             </form>
           </div>
 
@@ -184,12 +217,12 @@ export default function ContactPage() {
       </main>
 
       {/* Footer */}
-      <Footer onSubscribeClick={() => setIsSubscribeOpen(true)} />
+      <Footer onSubscribeClick={() => setIsSubscribeOpen(true)} showBorder={true} />
 
       {/* Subscribe Modal */}
       {isSubscribeOpen && (
         <PortalPopup
-          overlayColor="rgba(0, 0, 0, 0.8)"
+          overlayColor="rgba(255, 255, 255, 0.98)"
           placement="Centered"
           onOutsideClick={() => setIsSubscribeOpen(false)}
         >

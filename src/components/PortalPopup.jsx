@@ -38,10 +38,12 @@ export default function PortalPopup({
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
-      className="fixed inset-0 flex items-center justify-center"
-      style={{ zIndex, backgroundColor: overlayColor }}
+      className="fixed inset-0 flex items-end justify-center animate-fadeIn bg-white/50"
+      style={{ zIndex }}
     >
-      <div className="max-w-[90%] max-h-[90%] overflow-auto">{children}</div>
+      <div className="w-full h-full md:w-auto md:h-auto md:max-w-[90%] md:max-h-[90%] overflow-auto animate-slideUp md:mb-12">
+        {children}
+      </div>
     </div>,
     portalsDiv
   );
