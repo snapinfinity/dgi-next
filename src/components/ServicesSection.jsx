@@ -41,8 +41,8 @@ export default function ServicesSection() {
             key={idx}
             className="py-8 border-b border-decograph-red group cursor-pointer"
           >
-            {/* Collapsed State - Service Title */}
-            <div className="flex items-center justify-between group-hover:hidden">
+            {/* Collapsed State - Service Title (desktop only, hidden on hover) */}
+            <div className="hidden md:flex items-center justify-between md:group-hover:hidden">
               <span className="service-title text-gray-900">{service.title}</span>
               <svg
                 className="w-6 h-6 text-decograph-red opacity-0 group-hover:opacity-100 transition-opacity"
@@ -59,8 +59,8 @@ export default function ServicesSection() {
               </svg>
             </div>
             
-            {/* Expanded State - Bullet + Title + Description */}
-            <div className="hidden group-hover:block">
+            {/* Expanded State - Bullet + Title + Description (always on mobile, hover on desktop) */}
+            <div className="block md:hidden md:group-hover:block">
               <div className="flex items-start gap-4">
                 {/* Bullet Point */}
                 <div 

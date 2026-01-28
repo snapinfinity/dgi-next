@@ -49,10 +49,10 @@ export default function WhyDecographSection() {
             key={idx}
             className="relative p-8 rounded-lg border border-decograph-red/20 group"
           >
-            {/* Content wrapper that moves up on hover */}
-            <div className="transition-transform duration-300 group-hover:-translate-y-2">
+            {/* Content wrapper that moves up on hover (always up on mobile) */}
+            <div className="transition-transform duration-300 -translate-y-2 md:translate-y-0 md:group-hover:-translate-y-2">
               {/* Number */}
-              <span className="text-5xl font-medium text-decograph-red/20 mb-4 block transition-colors duration-300 group-hover:text-decograph-red">
+              <span className="text-5xl font-medium text-decograph-red md:text-decograph-red/20 mb-4 block transition-colors duration-300 md:group-hover:text-decograph-red">
                 {pillar.number}
               </span>
 

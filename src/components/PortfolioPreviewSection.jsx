@@ -27,7 +27,7 @@ export default function PortfolioPreviewSection() {
         </div>
 
         <Link 
-          href="/portfolio"
+          href="/works"
           className="text-decograph-red hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
         >
           View All Projects →
@@ -37,7 +37,7 @@ export default function PortfolioPreviewSection() {
       {/* Portfolio Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {portfolioItems.map((item, idx) => (
-          <Link key={idx} href={`/portfolio/${item.slug}`} className="group cursor-pointer block">
+          <Link key={idx} href={`/works/${item.slug}`} className="group cursor-pointer block">
             {/* Image */}
             <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden mb-4">
               <img

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
@@ -32,18 +33,28 @@ const projectData = {
 export default function WorkDetailPage({ params }) {
   const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
   const [isMoreInfoOpen, setIsMoreInfoOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 0);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white pt-14 md:pt-16">
       {/* Header */}
-      <Header isWhiteBg={true} isDark={true} />
+      <Header isWhiteBg={true} isDark={true} hideGradient={!hasScrolled} />
 
       {/* Content */}
       <main className="max-w-[1280px] mx-auto px-4 lg:px-12 py-12">
         {/* Navigation Bar */}
         <div className="flex items-center justify-between py-4 border-b border-gray-900">
           <Link
-            href="/portfolio"
+            href="/works"
             className="flex items-center gap-2 text-gray-900 hover:text-decograph-red transition-colors"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,11 +113,15 @@ export default function WorkDetailPage({ params }) {
         </div>
 
         {/* Hero Image */}
-        <div className="relative mb-16 rounded-lg overflow-hidden bg-gray-100 group">
-          <img
+        <div className="relative mb-16 rounded-lg overflow-hidden bg-gray-100 group aspect-[3/2]">
+          <Image
             src={`https://picsum.photos/seed/${projectData.images[0].seed}/${projectData.images[0].w}/${projectData.images[0].h}`}
             alt={projectData.title}
-            className="w-full h-auto object-cover transition-transform duration-1500 ease-out group-hover:scale-110"
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover transition-transform duration-1500 ease-out group-hover:scale-110"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlNWU3ZWIiLz48L3N2Zz4="
           />
         </div>
 

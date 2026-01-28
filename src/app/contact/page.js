@@ -119,7 +119,7 @@ export default function ContactPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="+971 00 000 0000"
+                  placeholder="+971 50 123 4567"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-decograph-red focus:ring-1 focus:ring-decograph-red outline-none transition-colors"
                 />
               </div>
@@ -180,25 +180,24 @@ export default function ContactPage() {
                 Office Location
               </h3>
               <div className="text-gray-600 space-y-1">
-                <p>Business Bay</p>
-                <p>Dubai, United Arab Emirates</p>
-                <p>P.O. Box 123456</p>
+                <p>England cluster X26</p>
+                <p>Office No S-12</p>
+                <p>International City</p>
+                <p>Dubai, UAE</p>
               </div>
             </div>
 
             <div>
               <h3 className="text-xl font-medium text-gray-900 mb-3">Email</h3>
               <div className="text-gray-600 space-y-1">
-                <p>info@decograph.ae</p>
-                <p>hello@decograph.ae</p>
+                <p>info@decographinteriors.com</p>
               </div>
             </div>
 
             <div>
               <h3 className="text-xl font-medium text-gray-900 mb-3">Phone</h3>
               <div className="text-gray-600 space-y-1">
-                <p>+971 4 123 4567</p>
-                <p>+971 50 123 4567</p>
+                <p>+971-563970724</p>
               </div>
             </div>
 
@@ -207,8 +206,7 @@ export default function ContactPage() {
                 Business Hours
               </h3>
               <div className="text-gray-600 space-y-1">
-                <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                <p>Saturday: 10:00 AM - 2:00 PM</p>
+                <p>Monday - Saturday: 9:00 AM - 6:00 PM</p>
                 <p>Sunday: Closed</p>
               </div>
             </div>

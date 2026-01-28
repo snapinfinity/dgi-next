@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import AboutHeroSection from "@/components/AboutHeroSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -9,10 +10,21 @@ import ClienteleSection from "@/components/ClienteleSection";
 import Footer from "@/components/Footer";
 
 export default function AboutPage() {
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 0);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-white pt-14 md:pt-16">
       {/* Header */}
-      <Header isWhiteBg={true} isDark={true} />
+      <Header isWhiteBg={true} isDark={true} hideGradient={!hasScrolled} />
 
       {/* About Hero Section */}
       <AboutHeroSection />

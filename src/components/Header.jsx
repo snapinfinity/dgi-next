@@ -1,26 +1,106 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "/", label: "Home" },
+  { href: "/works", label: "Works" },
   { href: "/about", label: "About" },
   { href: "/about#services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
+  { href: "/about#portfolio", label: "Portfolio" },
   { href: "/about#clientele", label: "Clientele" },
 ];
 
-export default function Header({ isScrolled, onSubscribeClick, isDark = false, isWhiteBg = false }) {
+export default function Header({ isScrolled, onSubscribeClick, isDark = false, isWhiteBg = false, hideGradient = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const pathname = usePathname();
+  
+  // Intersection Observer for section detection on about page
+  useEffect(() => {
+    if (pathname !== "/about") {
+      setActiveSection("");
+      return;
+    }
+
+    const sections = ["services", "portfolio", "clientele"];
+    const observers = [];
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observerOptions = {
+      rootMargin: "-40% 0px -40% 0px", // Middle 20% of viewport triggers
+      threshold: 0,
+    };
+
+    sections.forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        observer.observe(element);
+        observers.push(observer);
+      }
+    });
+
+    // Handle scroll to detect when at top (About section)
+    const handleScroll = () => {
+      if (window.scrollY < 200) {
+        setActiveSection("");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
+  // Check if a link is active
+  const isLinkActive = (href) => {
+    // For hash links on about page
+    if (href.includes("#") && pathname === "/about") {
+      const hash = href.split("#")[1];
+      return activeSection === hash;
+    }
+    
+    // For /about without hash - active when no section is in view
+    if (href === "/about" && pathname === "/about") {
+      return activeSection === "";
+    }
+    
+    // For other pages
+    if (!href.includes("#")) {
+      return pathname === href || pathname.startsWith(href + "/");
+    }
+    
+    return false;
+  };
   
   const getTextColor = (href) => {
     // If menu is open, always use black text for visibility on white background
     if (isMenuOpen) return "text-black";
     
-    const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
+    const isActive = isLinkActive(href);
     if (isActive) {
       // When nav text is white (isDark=false), highlight in black; otherwise red
       return isDark ? "text-decograph-red" : "text-black";
@@ -74,7 +154,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`px-3 py-2 text-sm font-normal ${getTextColor(link.href)} transition-colors duration-300 hover:opacity-70`}
+                  className={`px-3 py-2 text-sm font-normal ${getTextColor(link.href)} transition-colors duration-300 hover:text-decograph-red`}
                 >
                   {link.label}
                 </Link>
@@ -85,7 +165,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
           {/* Right - Contact (Desktop) */}
           <Link
             href="/contact"
-            className={`hidden md:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 hover:opacity-70`}
+            className={`hidden md:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 hover:text-decograph-red`}
           >
             Contact
           </Link>
@@ -98,7 +178,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
       >
         <ul className="flex flex-col items-start gap-0 w-full">
           {navLinks.map((link) => {
-            const isActive = link.href === "/" ? pathname === "/" : pathname === link.href || pathname.startsWith(link.href.split('#')[0]) && link.href.includes('#');
+            const isActive = isLinkActive(link.href);
             return (
               <li key={link.href} className="w-full text-left">
                 <Link
@@ -123,8 +203,8 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
         </ul>
       </div>
       
-      {/* Mobile Gradient - Always Visible (Hidden when menu is open to be clean) */}
-      {!isMenuOpen && (
+      {/* Mobile Gradient - Always Visible (Hidden when menu is open or hideGradient is true) */}
+      {!isMenuOpen && !hideGradient && (
         <div 
           className="md:hidden absolute left-0 right-0 h-16 top-full -mt-px"
           style={{
@@ -133,8 +213,8 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
         />
       )}
 
-      {/* Desktop fade effect - only visible when white background */}
-      {isWhiteBg && (
+      {/* Desktop fade effect - only visible when white background and hideGradient is false */}
+      {isWhiteBg && !hideGradient && (
         <div 
           className="hidden md:block absolute left-0 right-0 h-24 -bottom-24"
           style={{
