@@ -154,7 +154,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`px-3 py-2 text-sm font-normal ${getTextColor(link.href)} transition-colors duration-300 hover:text-decograph-red`}
+                  className={`px-3 py-2 text-sm font-normal ${getTextColor(link.href)} transition-colors duration-300 ${isDark ? 'hover:text-decograph-red' : 'hover:text-black'}`}
                 >
                   {link.label}
                 </Link>
@@ -165,7 +165,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
           {/* Right - Contact (Desktop) */}
           <Link
             href="/contact"
-            className={`hidden md:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 hover:text-decograph-red`}
+            className={`hidden md:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 ${isDark ? 'hover:text-decograph-red' : 'hover:text-black'}`}
           >
             Contact
           </Link>

@@ -1,18 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import WhiteHeader from "@/components/WhiteHeader";
+import { useState, useEffect } from "react";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
 import PortalPopup from "@/components/PortalPopup";
 
 export default function PrivacyPolicyPage() {
   const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 0);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white pt-20">
       {/* Header */}
-      <WhiteHeader />
+      <Header 
+        isWhiteBg={true} 
+        isDark={true} 
+        hideGradient={!hasScrolled} 
+        onSubscribeClick={() => setIsSubscribeOpen(true)}
+      />
 
       {/* Content */}
       <main className="max-w-[1000px] mx-auto px-6 lg:px-24 py-16">
@@ -90,9 +105,10 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="text-gray-900 font-medium">
               <p>Decograph Interiors</p>
-              <p>Business Bay, Dubai, UAE</p>
-              <p>Email: info@decograph.ae</p>
-              <p>Phone: +971 4 123 4567</p>
+              <p>England cluster X26, Office No S-12</p>
+              <p>International City, Dubai, UAE</p>
+              <p>Email: info@decographinteriors.com</p>
+              <p>Phone: +971 56 397 0724</p>
             </div>
           </section>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useProjects } from "@/hooks/useProjects";
 
 // Building icon SVG component
 const BuildingIcon = () => (
@@ -9,135 +10,146 @@ const BuildingIcon = () => (
   </svg>
 );
 
-// Portfolio item component
-const PortfolioItem = ({ seed, slug, title1 = "Corporate Office", title2 = "Heading Text" }) => (
+const PortfolioItem = ({ coverImage, slug, title, category }) => (
   <Link
-    href={`/works/${slug}`}
-    className="relative overflow-hidden group cursor-pointer block"
+    href={`/works/${slug || '#'}`}
+    className="relative overflow-hidden group cursor-pointer block h-full w-full"
   >
-    <img
-      src={`https://picsum.photos/seed/${seed}/800/600`}
-      alt={`Portfolio ${seed}`}
-      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      loading="lazy"
-    />
+    {coverImage && (
+      <img
+        src={coverImage}
+        alt={title || "Project"}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    )}
     <div className="absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white">
       <BuildingIcon />
-      <span className="portfolio-title1 mt-4">{title1}</span>
-      <span className="portfolio-title2 mt-1">{title2}</span>
+      <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+      <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
     </div>
   </Link>
 );
 
 // Single Bento Grid component
-const BentoGrid = ({ groupIndex }) => (
-  <div 
-    className="hidden md:grid gap-3"
-    style={{
-      gridTemplateAreas: `
-        "a b"
-        "a c"
-      `,
-      gridTemplateColumns: '349fr 881fr',
-      gridTemplateRows: '229fr 601fr',
-      aspectRatio: '1230 / 830',
-    }}
-  >
-    {/* Box A - 3 stacked images */}
-    <div 
-      className="grid gap-3"
-      style={{ 
-        gridArea: 'a',
-        gridTemplateRows: '348fr 204fr 238fr',
-      }}
-    >
-      {[
-        { seed: `grid${groupIndex}a1`, slug: `office-${groupIndex}-1` },
-        { seed: `grid${groupIndex}a2`, slug: `office-${groupIndex}-2` },
-        { seed: `grid${groupIndex}a3`, slug: `office-${groupIndex}-3` },
-      ].map((item, idx) => (
-        <PortfolioItem key={idx} {...item} />
-      ))}
-    </div>
+const BentoGrid = ({ works }) => {
+  // Take first 10 items for the grid
+  const gridWorks = works.slice(0, 10);
+  const getWork = (idx) => gridWorks[idx] || null;
 
-    {/* Box B - 3 horizontal images */}
+  return (
     <div 
-      className="grid gap-3"
-      style={{ 
-        gridArea: 'b',
-        gridTemplateColumns: '311fr 227fr 282fr',
+      className="hidden md:grid gap-3"
+      style={{
+        gridTemplateAreas: `
+          "a b"
+          "a c"
+        `,
+        gridTemplateColumns: '349fr 881fr',
+        gridTemplateRows: '229fr 601fr',
+        aspectRatio: '1230 / 830',
       }}
     >
-      {[
-        { seed: `grid${groupIndex}b1`, slug: `office-${groupIndex}-4` },
-        { seed: `grid${groupIndex}b2`, slug: `office-${groupIndex}-5` },
-        { seed: `grid${groupIndex}b3`, slug: `office-${groupIndex}-6` },
-      ].map((item, idx) => (
-        <PortfolioItem key={idx} {...item} />
-      ))}
-    </div>
-
-    {/* Box C - 2 columns with 2 stacked images each */}
-    <div 
-      className="grid gap-3"
-      style={{ 
-        gridArea: 'c',
-        gridTemplateColumns: '401fr 440fr',
-      }}
-    >
-      {/* Left column - 2 stacked images */}
+      {/* Box A - 3 stacked images */}
       <div 
         className="grid gap-3"
-        style={{ gridTemplateRows: '217fr 344fr' }}
+        style={{ 
+          gridArea: 'a',
+          gridTemplateRows: '348fr 204fr 238fr',
+        }}
       >
-        {[
-          { seed: `grid${groupIndex}c1`, slug: `office-${groupIndex}-7` },
-          { seed: `grid${groupIndex}c2`, slug: `office-${groupIndex}-8` },
-        ].map((item, idx) => (
-          <PortfolioItem key={idx} {...item} />
-        ))}
+        {[0, 1, 2].map((idx) => {
+          const work = getWork(idx);
+          return work ? <PortfolioItem key={idx} {...work} /> : null;
+        })}
       </div>
 
-      {/* Right column - 2 stacked images */}
+      {/* Box B - 3 horizontal images */}
       <div 
         className="grid gap-3"
-        style={{ gridTemplateRows: '323fr 238fr' }}
+        style={{ 
+          gridArea: 'b',
+          gridTemplateColumns: '311fr 227fr 282fr',
+        }}
       >
-        {[
-          { seed: `grid${groupIndex}c3`, slug: `office-${groupIndex}-9` },
-          { seed: `grid${groupIndex}c4`, slug: `office-${groupIndex}-10` },
-        ].map((item, idx) => (
-          <PortfolioItem key={idx} {...item} />
-        ))}
+        {[3, 4, 5].map((idx) => {
+          const work = getWork(idx);
+          return work ? <PortfolioItem key={idx} {...work} /> : null;
+        })}
+      </div>
+
+      {/* Box C - 2 columns with 2 stacked images each */}
+      <div 
+        className="grid gap-3"
+        style={{ 
+          gridArea: 'c',
+          gridTemplateColumns: '401fr 440fr',
+        }}
+      >
+        {/* Left column - 2 stacked images */}
+        <div 
+          className="grid gap-3"
+          style={{ gridTemplateRows: '217fr 344fr' }}
+        >
+          {[6, 7].map((idx) => {
+            const work = getWork(idx);
+            return work ? <PortfolioItem key={idx} {...work} /> : null;
+          })}
+        </div>
+
+        {/* Right column - 2 stacked images */}
+        <div 
+          className="grid gap-3"
+          style={{ gridTemplateRows: '323fr 238fr' }}
+        >
+          {[8, 9].map((idx) => {
+            const work = getWork(idx);
+            return work ? <PortfolioItem key={idx} {...work} /> : null;
+          })}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function PortfolioGrid() {
+  const { data: projects = [], isLoading } = useProjects();
+
+  if (isLoading) {
+    return (
+      <section className="relative min-h-screen py-8 md:py-16 px-6 lg:px-20 overflow-hidden bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="w-full h-[600px] bg-gray-100 animate-pulse rounded-lg"></div>
+        </div>
+      </section>
+    );
+  }
+
+  // If no projects, show empty state but keep the container to maintain layout/background
+  if (projects.length === 0) {
+    return (
+      <section className="relative min-h-screen py-8 md:py-16 px-6 lg:px-20 overflow-hidden bg-white">
+         <div className="relative max-w-[1400px] mx-auto space-y-3 flex items-center justify-center h-full">
+            <p className="text-gray-400">No projects available.</p>
+         </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="relative py-8 md:py-16 px-6 lg:px-20 overflow-hidden bg-white">
+    <section className="relative min-h-screen py-8 md:py-16 px-6 lg:px-20 overflow-hidden bg-white">
       <div className="relative max-w-[1400px] mx-auto space-y-3">
-        {/* Mobile View: Simple stacked layout */}
+        {/* Mobile View: Simple stacked layout (Limit to first 10) */}
         <div className="md:hidden space-y-3">
-          {[0, 1, 2].map((groupIndex) => (
-            [
-              { seed: `grid${groupIndex}a1`, slug: `office-${groupIndex}-1` },
-              { seed: `grid${groupIndex}a2`, slug: `office-${groupIndex}-2` },
-              { seed: `grid${groupIndex}b1`, slug: `office-${groupIndex}-3` },
-              { seed: `grid${groupIndex}b2`, slug: `office-${groupIndex}-4` },
-              { seed: `grid${groupIndex}c1`, slug: `office-${groupIndex}-5` },
-              { seed: `grid${groupIndex}c2`, slug: `office-${groupIndex}-6` },
-            ].map((item, idx) => (
-              <PortfolioItem key={`${groupIndex}-${idx}`} {...item} />
-            ))
+          {projects.slice(0, 10).map((project, idx) => (
+            <div key={idx} className="h-64">
+              <PortfolioItem {...project} />
+            </div>
           ))}
         </div>
 
-        {/* Desktop: 3 Bento Grids */}
-        {[0, 1, 2].map((groupIndex) => (
-          <BentoGrid key={groupIndex} groupIndex={groupIndex} />
-        ))}
+        {/* Desktop: Single Bento Grid (Limit to first 10) */}
+        <BentoGrid works={projects} />
       </div>
     </section>
   );

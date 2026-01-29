@@ -215,7 +215,7 @@ export default function ContactPage() {
       </main>
 
       {/* Footer */}
-      <Footer onSubscribeClick={() => setIsSubscribeOpen(true)} showBorder={true} />
+      <Footer onSubscribeClick={() => setIsSubscribeOpen(true)} />
 
       {/* Subscribe Modal */}
       {isSubscribeOpen && (

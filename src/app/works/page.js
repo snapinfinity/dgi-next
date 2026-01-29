@@ -6,26 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
 import PortalPopup from "@/components/PortalPopup";
-
-// ============================================
-// CONFIGURABLE: Change this value to test different work counts
-// Each full grid displays 11 images
-// ============================================
-const TOTAL_WORKS = 18;
-
-// Generate work items based on TOTAL_WORKS count
-const generateWorks = (count) => {
-  const works = [];
-  for (let i = 0; i < count; i++) {
-    works.push({
-      seed: `work${i + 1}`,
-      slug: `project-${i + 1}`,
-      title1: "Corporate Office",
-      title2: "Heading Text",
-    });
-  }
-  return works;
-};
+import { useProjects } from "@/hooks/useProjects";
 
 // Building icon SVG component
 const BuildingIcon = () => (
@@ -35,27 +16,29 @@ const BuildingIcon = () => (
 );
 
 // Portfolio item component
-const PortfolioItem = ({ seed, slug, title1, title2 }) => (
+const PortfolioItem = ({ coverImage, slug, title, category }) => (
   <Link
-    href={`/works/${slug}`}
-    className="relative overflow-hidden group cursor-pointer block"
+    href={`/works/${slug || '#'}`}
+    className="relative overflow-hidden group cursor-pointer block h-full w-full"
   >
-    <img
-      src={`https://picsum.photos/seed/${seed}/800/600`}
-      alt={`Portfolio ${seed}`}
-      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      loading="lazy"
-    />
+    {coverImage && (
+      <img
+        src={coverImage}
+        alt={title || "Portfolio Item"}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    )}
     <div className="absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white">
       <BuildingIcon />
-      <span className="portfolio-title1 mt-4">{title1}</span>
-      <span className="portfolio-title2 mt-1">{title2}</span>
+      <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+      <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
     </div>
   </Link>
 );
 
 // Empty placeholder for grid slots without images
-const EmptySlot = () => <div className="bg-transparent" />;
+const EmptySlot = () => <div className="bg-gray-100 h-full w-full" />;
 
 // Grid positions:
 // Box A: positions 0, 1, 2 (3 vertical images)
@@ -68,10 +51,8 @@ const IMAGES_PER_GRID = 10;
 const BentoGrid = ({ works, startIndex }) => {
   const gridWorks = works.slice(startIndex, startIndex + IMAGES_PER_GRID);
   
-  if (gridWorks.length === 0) return null;
-
   // Get image at specific position or null
-  const getImage = (position) => gridWorks[position] || null;
+  const getWork = (position) => gridWorks[position] || null;
 
   return (
     <div 
@@ -92,8 +73,8 @@ const BentoGrid = ({ works, startIndex }) => {
         }}
       >
         {[0, 1, 2].map((pos) => {
-          const img = getImage(pos);
-          return img ? <PortfolioItem key={pos} {...img} /> : <EmptySlot key={pos} />;
+          const work = getWork(pos);
+          return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
         })}
       </div>
 
@@ -106,8 +87,8 @@ const BentoGrid = ({ works, startIndex }) => {
         }}
       >
         {[3, 4, 5].map((pos) => {
-          const img = getImage(pos);
-          return img ? <PortfolioItem key={pos} {...img} /> : <EmptySlot key={pos} />;
+          const work = getWork(pos);
+          return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
         })}
       </div>
 
@@ -125,8 +106,8 @@ const BentoGrid = ({ works, startIndex }) => {
           style={{ gridTemplateRows: '217fr 344fr' }}
         >
           {[6, 7].map((pos) => {
-            const img = getImage(pos);
-            return img ? <PortfolioItem key={pos} {...img} /> : <EmptySlot key={pos} />;
+            const work = getWork(pos);
+            return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
           })}
         </div>
 
@@ -136,8 +117,8 @@ const BentoGrid = ({ works, startIndex }) => {
           style={{ gridTemplateRows: '323fr 238fr' }}
         >
           {[8, 9].map((pos) => {
-            const img = getImage(pos);
-            return img ? <PortfolioItem key={pos} {...img} /> : <EmptySlot key={pos} />;
+            const work = getWork(pos);
+            return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
           })}
         </div>
       </div>
@@ -148,14 +129,12 @@ const BentoGrid = ({ works, startIndex }) => {
 export default function PortfolioPage() {
   const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  
-  // Generate works based on TOTAL_WORKS
-  const allWorks = generateWorks(TOTAL_WORKS);
+  const { data: allProjects = [], isLoading } = useProjects();
   
   // Calculate number of grids needed
-  const fullGridCount = Math.floor(TOTAL_WORKS / IMAGES_PER_GRID);
-  const remainingImages = TOTAL_WORKS % IMAGES_PER_GRID;
-  const totalGrids = remainingImages > 0 ? fullGridCount + 1 : fullGridCount;
+  const fullGridCount = Math.floor(allProjects.length / IMAGES_PER_GRID);
+  const remainingImages = allProjects.length % IMAGES_PER_GRID;
+  const totalGrids = allProjects.length > 0 ? (remainingImages > 0 ? fullGridCount + 1 : fullGridCount) : 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -174,21 +153,42 @@ export default function PortfolioPage() {
       {/* Portfolio Grid */}
       <section className="py-8 px-4 lg:px-8">
         <div className="max-w-[1400px] mx-auto space-y-3">
-          {/* Mobile View: Simple stacked layout */}
-          <div className="md:hidden space-y-3">
-            {allWorks.map((work, idx) => (
-              <PortfolioItem key={idx} {...work} />
-            ))}
-          </div>
+          
+          {isLoading ? (
+             // Loading Skeleton
+             <div className="animate-pulse space-y-4">
+                <div className="h-64 bg-gray-100 rounded-lg w-full"></div>
+                <div className="h-64 bg-gray-100 rounded-lg w-full"></div>
+             </div>
+          ) : (
+            <>
+              {/* Mobile View: Simple stacked layout */}
+              <div className="md:hidden space-y-3">
+                {allProjects.map((project, idx) => (
+                  <div key={idx} className="h-64">
+                   <PortfolioItem {...project} />
+                  </div>
+                ))}
+              </div>
 
-          {/* Desktop: Multiple Bento Grids */}
-          {Array.from({ length: totalGrids }).map((_, gridIndex) => (
-            <BentoGrid 
-              key={gridIndex} 
-              works={allWorks} 
-              startIndex={gridIndex * IMAGES_PER_GRID} 
-            />
-          ))}
+              {/* Desktop: Multiple Bento Grids */}
+              {Array.from({ length: totalGrids }).map((_, gridIndex) => (
+                <BentoGrid 
+                  key={gridIndex} 
+                  works={allProjects} 
+                  startIndex={gridIndex * IMAGES_PER_GRID} 
+                />
+              ))}
+
+              {/* Empty State */}
+              {allProjects.length === 0 && (
+                <div className="text-center py-20 text-gray-500">
+                  <p>No works found.</p>
+                </div>
+              )}
+            </>
+          )}
+
         </div>
       </section>
 

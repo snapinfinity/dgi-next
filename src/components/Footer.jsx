@@ -82,7 +82,7 @@ export default function Footer({ onSubscribeClick, showBorder = false }) {
   return (
     <footer className="relative py-8 px-6 lg:px-20 bg-white">
       <div className="mx-auto">
-        {showBorder && <div className="border-t border-black mb-6" />}
+        {showBorder && <div className="border-t border-black mb-32" />}
         
         {/* Mobile Footer */}
         <div className="md:hidden">
