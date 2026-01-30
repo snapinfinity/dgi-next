@@ -134,7 +134,7 @@
 
 /* Decograph Custom Colors */
 @theme inline {
-  --color-decograph-red: #ed3538;
+  --color-decograph-red: #721b24;
   --font-serif: "Georgia", "Times New Roman", serif;
   --font-deuterium: "Deuterium Variable", sans-serif;
   --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -402,7 +402,7 @@
 
 /* Hero Carousel Animation */
 .carousel-track {
-  animation: carousel-scroll 120s linear infinite;
+  animation: carousel-scroll 160s linear infinite;
   width: max-content;
 }
 

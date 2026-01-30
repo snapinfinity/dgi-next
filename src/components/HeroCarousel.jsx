@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useRef, useState } from "react";
 
 // Hero images organized by row (7 images per row)
 const heroImageRows = [
@@ -47,56 +46,27 @@ const heroImageRows = [
   ],
 ];
 
-const CarouselRow = ({ rowIndex }) => {
+const CarouselRow = ({ rowIndex, isPaused, setIsPaused }) => {
   const images = heroImageRows[rowIndex] || heroImageRows[0];
   // Duplicate images multiple times for seamless infinite loop
   const allImages = [...images, ...images, ...images, ...images];
   const trackRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - trackRef.current.offsetLeft);
-    setScrollLeft(trackRef.current.scrollLeft);
-    trackRef.current.style.animationPlayState = "paused";
-  };
-
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      setIsDragging(false);
-      trackRef.current.style.animationPlayState = "running";
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    trackRef.current.style.animationPlayState = "running";
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - trackRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    trackRef.current.scrollLeft = scrollLeft - walk;
-  };
 
   return (
     <div 
-      className="w-full overflow-hidden cursor-grab active:cursor-grabbing"
+      className="w-full overflow-hidden"
       ref={trackRef}
-      onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
     >
-      <div className="carousel-track flex gap-35">
+      <div 
+        className="carousel-track flex gap-[130px] pr-[130px]"
+        style={{ animationPlayState: isPaused ? "paused" : "running" }}
+      >
         {allImages.map((src, idx) => (
           <div
             key={idx}
-            className="flex-shrink-0 group"
+            className="flex-shrink-0 group relative"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
             <div className="w-[160px] h-[100px] overflow-hidden">
               <img
@@ -106,10 +76,6 @@ const CarouselRow = ({ rowIndex }) => {
                 draggable="false"
               />
             </div>
-            {/* Subtitle below image - visible on hover */}
-            <p className="text-white text-xs mt-1 font-deuterium opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-left">
-              Interior Design Project
-            </p>
           </div>
         ))}
       </div>
@@ -118,14 +84,16 @@ const CarouselRow = ({ rowIndex }) => {
 };
 
 export default function HeroCarousel() {
+  const [isPaused, setIsPaused] = useState(false);
+
   return (
     <section className="fixed inset-0 h-screen bg-decograph-red overflow-hidden z-0">
       {/* Carousel Container */}
       <div className="h-full flex flex-col justify-evenly">
-        <CarouselRow rowIndex={0} />
-        <CarouselRow rowIndex={1} />
-        <CarouselRow rowIndex={2} />
-        <CarouselRow rowIndex={3} />
+        <CarouselRow rowIndex={0} isPaused={isPaused} setIsPaused={setIsPaused} />
+        <CarouselRow rowIndex={1} isPaused={isPaused} setIsPaused={setIsPaused} />
+        <CarouselRow rowIndex={2} isPaused={isPaused} setIsPaused={setIsPaused} />
+        <CarouselRow rowIndex={3} isPaused={isPaused} setIsPaused={setIsPaused} />
       </div>
     </section>
   );
