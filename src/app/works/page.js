@@ -16,26 +16,38 @@ const BuildingIcon = () => (
 );
 
 // Portfolio item component
-const PortfolioItem = ({ coverImage, slug, title, category }) => (
-  <Link
-    href={`/works/${slug || '#'}`}
-    className="relative overflow-hidden group cursor-pointer block h-full w-full"
-  >
-    {coverImage && (
-      <img
-        src={coverImage}
-        alt={title || "Portfolio Item"}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        loading="lazy"
-      />
-    )}
-    <div className="absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white">
-      <BuildingIcon />
-      <span className="portfolio-title1 mt-4">{category || "Category"}</span>
-      <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
-    </div>
-  </Link>
-);
+const PortfolioItem = ({ coverImage, slug, title, category }) => {
+  const [isTouched, setIsTouched] = useState(false);
+
+  return (
+    <Link
+      href={`/works/${slug || '#'}`}
+      className="relative overflow-hidden group cursor-pointer block h-full w-full"
+      onTouchStart={() => setIsTouched(true)}
+      onTouchEnd={() => setIsTouched(false)}
+    >
+      {coverImage && (
+        <img
+          src={coverImage}
+          alt={title || "Portfolio Item"}
+          className={`w-full h-full object-cover transition-transform duration-500 ${
+            isTouched ? "scale-105" : "group-hover:scale-105"
+          }`}
+          loading="lazy"
+        />
+      )}
+      <div 
+        className={`absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white ${
+          isTouched ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+        }`}
+      >
+        <BuildingIcon />
+        <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+        <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
+      </div>
+    </Link>
+  );
+};
 
 // Empty placeholder for grid slots without images
 const EmptySlot = () => <div className="bg-gray-100 h-full w-full" />;

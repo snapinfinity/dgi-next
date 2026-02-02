@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useProjects } from "@/hooks/useProjects";
 
 // Building icon SVG component
@@ -10,26 +11,38 @@ const BuildingIcon = () => (
   </svg>
 );
 
-const PortfolioItem = ({ coverImage, slug, title, category }) => (
-  <Link
-    href={`/works/${slug || '#'}`}
-    className="relative overflow-hidden group cursor-pointer block h-full w-full"
-  >
-    {coverImage && (
-      <img
-        src={coverImage}
-        alt={title || "Project"}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        loading="lazy"
-      />
-    )}
-    <div className="absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white">
-      <BuildingIcon />
-      <span className="portfolio-title1 mt-4">{category || "Category"}</span>
-      <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
-    </div>
-  </Link>
-);
+const PortfolioItem = ({ coverImage, slug, title, category }) => {
+  const [isTouched, setIsTouched] = useState(false);
+
+  return (
+    <Link
+      href={`/works/${slug || '#'}`}
+      className="relative overflow-hidden group cursor-pointer block h-full w-full"
+      onTouchStart={() => setIsTouched(true)}
+      onTouchEnd={() => setIsTouched(false)}
+    >
+      {coverImage && (
+        <img
+          src={coverImage}
+          alt={title || "Project"}
+          className={`w-full h-full object-cover transition-transform duration-500 ${
+            isTouched ? "scale-105" : "group-hover:scale-105"
+          }`}
+          loading="lazy"
+        />
+      )}
+      <div
+        className={`absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white ${
+          isTouched ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+        }`}
+      >
+        <BuildingIcon />
+        <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+        <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
+      </div>
+    </Link>
+  );
+};
 
 // Single Bento Grid component
 const BentoGrid = ({ works }) => {
