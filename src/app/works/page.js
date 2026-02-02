@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscribeModal from "@/components/SubscribeModal";
 import PortalPopup from "@/components/PortalPopup";
 import { useProjects } from "@/hooks/useProjects";
+import { shimmer, toBase64 } from "@/lib/shimmer";
 
 // Building icon SVG component
 const BuildingIcon = () => (
@@ -27,13 +29,17 @@ const PortfolioItem = ({ coverImage, slug, title, category }) => {
       onTouchEnd={() => setIsTouched(false)}
     >
       {coverImage && (
-        <img
+        <Image
           src={coverImage}
           alt={title || "Portfolio Item"}
-          className={`w-full h-full object-cover transition-transform duration-500 ${
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          placeholder="blur"
+          blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+          className={`object-cover transition-transform duration-500 ${
             isTouched ? "scale-105" : "group-hover:scale-105"
           }`}
-          loading="lazy"
+          priority={false}
         />
       )}
       <div 
@@ -46,6 +52,48 @@ const PortfolioItem = ({ coverImage, slug, title, category }) => {
         <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
       </div>
     </Link>
+  );
+};
+
+// Bento Grid Skeleton Component
+const BentoGridSkeleton = () => {
+  const SkeletonItem = () => (
+    <div className="w-full h-full bg-gray-100 animate-pulse rounded-none" />
+  );
+
+  return (
+    <div
+      className="hidden md:grid gap-3"
+      style={{
+        gridTemplateAreas: `
+          "a b"
+          "a c"
+        `,
+        gridTemplateColumns: '349fr 881fr',
+        gridTemplateRows: '229fr 601fr',
+        aspectRatio: '1230 / 830',
+      }}
+    >
+      {/* Box A - 3 stacked images */}
+      <div className="grid gap-3" style={{ gridArea: 'a', gridTemplateRows: '348fr 204fr 238fr' }}>
+        {[0, 1, 2].map(i => <SkeletonItem key={i} />)}
+      </div>
+
+      {/* Box B - 3 horizontal images */}
+      <div className="grid gap-3" style={{ gridArea: 'b', gridTemplateColumns: '311fr 227fr 282fr' }}>
+         {[3, 4, 5].map(i => <SkeletonItem key={i} />)}
+      </div>
+
+      {/* Box C - 2 columns */}
+      <div className="grid gap-3" style={{ gridArea: 'c', gridTemplateColumns: '401fr 440fr' }}>
+        <div className="grid gap-3" style={{ gridTemplateRows: '217fr 344fr' }}>
+           {[6, 7].map(i => <SkeletonItem key={i} />)}
+        </div>
+        <div className="grid gap-3" style={{ gridTemplateRows: '323fr 238fr' }}>
+           {[8, 9].map(i => <SkeletonItem key={i} />)}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -168,10 +216,14 @@ export default function PortfolioPage() {
           
           {isLoading ? (
              // Loading Skeleton
-             <div className="animate-pulse space-y-4">
-                <div className="h-64 bg-gray-100 rounded-lg w-full"></div>
-                <div className="h-64 bg-gray-100 rounded-lg w-full"></div>
-             </div>
+             <>
+                <div className="md:hidden space-y-3">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="h-64 bg-gray-100 animate-pulse w-full"></div>
+                  ))}
+                </div>
+                <BentoGridSkeleton />
+             </>
           ) : (
             <>
               {/* Mobile View: Simple stacked layout */}
