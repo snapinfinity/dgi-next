@@ -13,15 +13,37 @@ const BuildingIcon = () => (
   </svg>
 );
 
-const PortfolioItem = ({ coverImage, slug, title, category }) => {
-  const [isTouched, setIsTouched] = useState(false);
+const PortfolioItem = ({ coverImage, slug, title, category, isRevealed, onReveal }) => {
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleTouch = () => {
+    // On touch, immediately reveal the card
+    if (!isRevealed) {
+      onReveal();
+    }
+  };
+
+  const handleClick = (e) => {
+    // On mobile, prevent default navigation and reveal first
+    if (window.innerWidth < 768) {
+      if (!isRevealed && !isNavigating) {
+        e.preventDefault();
+        onReveal();
+        setIsNavigating(true);
+        // Delay navigation to show the reveal animation
+        setTimeout(() => {
+          window.location.href = `/works/${slug || '#'}`;
+        }, 300);
+      }
+    }
+  };
 
   return (
     <Link
       href={`/works/${slug || '#'}`}
       className="relative overflow-hidden group cursor-pointer block h-full w-full"
-      onTouchStart={() => setIsTouched(true)}
-      onTouchEnd={() => setIsTouched(false)}
+      onTouchStart={handleTouch}
+      onClick={handleClick}
     >
       {coverImage && (
         <Image
@@ -31,17 +53,21 @@ const PortfolioItem = ({ coverImage, slug, title, category }) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-          className={`object-cover transition-transform duration-500 ${
-            isTouched ? "scale-105" : "group-hover:scale-105"
-          }`}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           priority={false}
         />
       )}
-      <div
-        className={`absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white ${
-          isTouched ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-        }`}
-      >
+      {/* Desktop: CSS hover (original behavior) */}
+      <div className="hidden md:flex absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col items-center justify-center text-white pointer-events-none">
+        <BuildingIcon />
+        <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+        <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
+      </div>
+      
+      {/* Mobile: State-based reveal (persistent until another card is touched) */}
+      <div className={`md:hidden absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white pointer-events-none ${
+        isRevealed ? "opacity-100" : "opacity-0"
+      }`}>
         <BuildingIcon />
         <span className="portfolio-title1 mt-4">{category || "Category"}</span>
         <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
@@ -93,6 +119,8 @@ const BentoGridSkeleton = () => {
 
 // Single Bento Grid component
 const BentoGrid = ({ works }) => {
+  const [revealedIndex, setRevealedIndex] = useState(null);
+  
   // Take first 10 items for the grid
   const gridWorks = works.slice(0, 10);
   const getWork = (idx) => gridWorks[idx] || null;
@@ -120,7 +148,14 @@ const BentoGrid = ({ works }) => {
       >
         {[0, 1, 2].map((idx) => {
           const work = getWork(idx);
-          return work ? <PortfolioItem key={idx} {...work} /> : null;
+          return work ? (
+            <PortfolioItem 
+              key={idx} 
+              {...work} 
+              isRevealed={revealedIndex === idx}
+              onReveal={() => setRevealedIndex(idx)}
+            />
+          ) : null;
         })}
       </div>
 
@@ -134,7 +169,14 @@ const BentoGrid = ({ works }) => {
       >
         {[3, 4, 5].map((idx) => {
           const work = getWork(idx);
-          return work ? <PortfolioItem key={idx} {...work} /> : null;
+          return work ? (
+            <PortfolioItem 
+              key={idx} 
+              {...work} 
+              isRevealed={revealedIndex === idx}
+              onReveal={() => setRevealedIndex(idx)}
+            />
+          ) : null;
         })}
       </div>
 
@@ -153,7 +195,14 @@ const BentoGrid = ({ works }) => {
         >
           {[6, 7].map((idx) => {
             const work = getWork(idx);
-            return work ? <PortfolioItem key={idx} {...work} /> : null;
+            return work ? (
+              <PortfolioItem 
+                key={idx} 
+                {...work} 
+                isRevealed={revealedIndex === idx}
+                onReveal={() => setRevealedIndex(idx)}
+              />
+            ) : null;
           })}
         </div>
 
@@ -164,7 +213,14 @@ const BentoGrid = ({ works }) => {
         >
           {[8, 9].map((idx) => {
             const work = getWork(idx);
-            return work ? <PortfolioItem key={idx} {...work} /> : null;
+            return work ? (
+              <PortfolioItem 
+                key={idx} 
+                {...work} 
+                isRevealed={revealedIndex === idx}
+                onReveal={() => setRevealedIndex(idx)}
+              />
+            ) : null;
           })}
         </div>
       </div>
@@ -174,6 +230,7 @@ const BentoGrid = ({ works }) => {
 
 export default function PortfolioGrid() {
   const { data: projects = [], isLoading } = useProjects();
+  const [mobileRevealedIndex, setMobileRevealedIndex] = useState(null);
 
   if (isLoading) {
     return (
@@ -210,7 +267,11 @@ export default function PortfolioGrid() {
         <div className="md:hidden space-y-3">
           {projects.slice(0, 10).map((project, idx) => (
             <div key={idx} className="h-64">
-              <PortfolioItem {...project} />
+              <PortfolioItem 
+                {...project} 
+                isRevealed={mobileRevealedIndex === idx}
+                onReveal={() => setMobileRevealedIndex(idx)}
+              />
             </div>
           ))}
         </div>

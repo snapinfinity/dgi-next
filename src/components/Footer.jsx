@@ -148,10 +148,14 @@ export default function Footer({ onSubscribeClick, showBorder = false }) {
           </button>
 
           {/* Bottom links */}
-          <div className="flex justify-between text-xs text-gray-500">
+          <div className="flex justify-between items-center text-xs text-gray-500">
             <Link href="/privacy-policy" className="hover:text-decograph-red transition-colors">
               Privacy Policy
             </Link>
+            <span className="text-gray-400">
+              Powered by{' '}
+              <a href="https://snapinfinity.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-decograph-red transition-colors">Snapinfinity</a>
+            </span>
             <Link href="/terms-conditions" className="hover:text-decograph-red transition-colors">
               Terms & Conditions
             </Link>
@@ -175,6 +179,11 @@ export default function Footer({ onSubscribeClick, showBorder = false }) {
             >
               Terms & Conditions
             </Link>
+            
+            <span className="">
+              Powered by{' '}
+              <a href="https://snapinfinity.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-decograph-red transition-colors">Snapinfinity</a>
+            </span>
           </div>
 
           {/* Right Links */}

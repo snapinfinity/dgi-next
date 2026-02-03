@@ -111,7 +111,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
   // If menu is open, force red logo (since background is white)
   const logoSrc = (isWhiteBg || isMenuOpen) ? "/images/logo-red.png" : "/images/logo.png";
   const iconColorClass = isDark ? "stroke-decograph-red" : "stroke-white";
-  const desktopBgClass = isWhiteBg ? "md:bg-white" : "md:bg-transparent";
+  const desktopBgClass = isWhiteBg ? "lg:bg-white" : "lg:bg-transparent";
   
   // Toggle handler
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -121,12 +121,12 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 bg-white ${desktopBgClass} transition-all duration-300`}>
-      <div className="w-full px-4 md:px-6 lg:px-8 relative z-50">
+      <div className="w-full px-4 lg:px-6 xl:px-8 relative z-50">
         <nav className="flex items-center justify-between h-20 relative">
           {/* Mobile Menu Icon (Animated) */}
           <button 
             onClick={toggleMenu}
-            className="md:hidden p-2 -ml-2 hover:opacity-70 transition-opacity flex flex-col justify-center gap-[6px] w-8 h-8"
+            className="lg:hidden p-2 -ml-2 hover:opacity-70 transition-opacity flex flex-col justify-center gap-[6px] w-8 h-8"
             aria-label="Toggle Menu"
           >
             <span 
@@ -138,7 +138,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
           </button>
 
           {/* Mobile Logo (Center) */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden">
             <Link href="/" onClick={() => setIsMenuOpen(false)}>
               <img 
                 src="/images/logo-red.png"
@@ -149,7 +149,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
           </div>
 
           {/* Left Navigation (Desktop) */}
-          <ul className="hidden md:flex items-center gap-0 lg:gap-1">
+          <ul className="hidden lg:flex items-center gap-0 xl:gap-1">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -162,10 +162,19 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
             ))}
           </ul>
 
+          {/* Center Logo (Desktop) */}
+          <Link href="/" className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+            <img 
+              src={logoSrc}
+              alt="Decograph Interiors" 
+              className="h-12 w-auto"
+            />
+          </Link>
+
           {/* Right - Contact (Desktop) */}
           <Link
             href="/contact"
-            className={`hidden md:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 ${isDark ? 'hover:text-decograph-red' : 'hover:text-black'}`}
+            className={`hidden lg:block px-3 py-2 text-sm font-normal ${getTextColor("/contact")} transition-colors duration-300 ${isDark ? 'hover:text-decograph-red' : 'hover:text-black'}`}
           >
             Contact
           </Link>
@@ -174,7 +183,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-white z-40 transition-transform duration-500 ease-in-out md:hidden flex flex-col justify-start items-start pt-24 px-6 ${isMenuOpen ? "translate-y-0" : "-translate-y-full"}`}
+        className={`fixed inset-0 bg-white z-40 transition-transform duration-500 ease-in-out lg:hidden flex flex-col justify-start items-start pt-24 px-6 ${isMenuOpen ? "translate-y-0" : "-translate-y-full"}`}
       >
         <ul className="flex flex-col items-start gap-0 w-full">
           {navLinks.map((link) => {
@@ -206,7 +215,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
       {/* Mobile Gradient - Always Visible (Hidden when menu is open or hideGradient is true) */}
       {!isMenuOpen && !hideGradient && (
         <div 
-          className="md:hidden absolute left-0 right-0 h-16 top-full -mt-px"
+          className="lg:hidden absolute left-0 right-0 h-16 top-full -mt-px"
           style={{
             backgroundImage: 'linear-gradient(hsl(0, 0%, 100%), hsla(0, 0%, 100%, 0.98759) 9.9%, hsla(0, 0%, 100%, 0.96314) 19.5%, hsla(0, 0%, 100%, 0.926) 28.7%, hsla(0, 0%, 100%, 0.87667) 37.3%, hsla(0, 0%, 100%, 0.81624) 45.2%, hsla(0, 0%, 100%, 0.74699) 52.3%, hsla(0, 0%, 100%, 0.66999) 58.7%, hsla(0, 0%, 100%, 0.58775) 64.4%, hsla(0, 0%, 100%, 0.50184) 69.5%, hsla(0, 0%, 100%, 0.41394) 74.1%, hsla(0, 0%, 100%, 0.3238) 78.4%, hsla(0, 0%, 100%, 0.23172) 82.6%, hsla(0, 0%, 100%, 0.1409) 86.9%, hsla(0, 0%, 100%, 0.0541) 92%, hsla(0, 0%, 100%, 0))'
           }}
@@ -216,7 +225,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
       {/* Desktop fade effect - only visible when white background and hideGradient is false */}
       {isWhiteBg && !hideGradient && (
         <div 
-          className="hidden md:block absolute left-0 right-0 h-24 -bottom-24"
+          className="hidden lg:block absolute left-0 right-0 h-24 -bottom-24"
           style={{
             backgroundImage: 'linear-gradient(hsl(0, 0%, 100%), hsla(0, 0%, 100%, 0.98759) 9.9%, hsla(0, 0%, 100%, 0.96314) 19.5%, hsla(0, 0%, 100%, 0.926) 28.7%, hsla(0, 0%, 100%, 0.87667) 37.3%, hsla(0, 0%, 100%, 0.81624) 45.2%, hsla(0, 0%, 100%, 0.74699) 52.3%, hsla(0, 0%, 100%, 0.66999) 58.7%, hsla(0, 0%, 100%, 0.58775) 64.4%, hsla(0, 0%, 100%, 0.50184) 69.5%, hsla(0, 0%, 100%, 0.41394) 74.1%, hsla(0, 0%, 100%, 0.3238) 78.4%, hsla(0, 0%, 100%, 0.23172) 82.6%, hsla(0, 0%, 100%, 0.1409) 86.9%, hsla(0, 0%, 100%, 0.0541) 92%, hsla(0, 0%, 100%, 0))'
           }}

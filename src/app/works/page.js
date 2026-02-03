@@ -18,15 +18,37 @@ const BuildingIcon = () => (
 );
 
 // Portfolio item component
-const PortfolioItem = ({ coverImage, slug, title, category }) => {
-  const [isTouched, setIsTouched] = useState(false);
+const PortfolioItem = ({ coverImage, slug, title, category, isRevealed, onReveal }) => {
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleTouch = () => {
+    // On touch, immediately reveal the card
+    if (!isRevealed) {
+      onReveal();
+    }
+  };
+
+  const handleClick = (e) => {
+    // On mobile, prevent default navigation and reveal first
+    if (window.innerWidth < 768) {
+      if (!isRevealed && !isNavigating) {
+        e.preventDefault();
+        onReveal();
+        setIsNavigating(true);
+        // Delay navigation to show the reveal animation
+        setTimeout(() => {
+          window.location.href = `/works/${slug || '#'}`;
+        }, 300);
+      }
+    }
+  };
 
   return (
     <Link
       href={`/works/${slug || '#'}`}
       className="relative overflow-hidden group cursor-pointer block h-full w-full"
-      onTouchStart={() => setIsTouched(true)}
-      onTouchEnd={() => setIsTouched(false)}
+      onTouchStart={handleTouch}
+      onClick={handleClick}
     >
       {coverImage && (
         <Image
@@ -36,17 +58,22 @@ const PortfolioItem = ({ coverImage, slug, title, category }) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-          className={`object-cover transition-transform duration-500 ${
-            isTouched ? "scale-105" : "group-hover:scale-105"
-          }`}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           priority={false}
         />
       )}
-      <div 
-        className={`absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white ${
-          isTouched ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-        }`}
-      >
+      
+      {/* Desktop: CSS hover (original behavior) */}
+      <div className="hidden md:flex absolute inset-0 bg-decograph-red opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col items-center justify-center text-white pointer-events-none">
+        <BuildingIcon />
+        <span className="portfolio-title1 mt-4">{category || "Category"}</span>
+        <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
+      </div>
+      
+      {/* Mobile: State-based reveal (persistent until another card is touched) */}
+      <div className={`md:hidden absolute inset-0 bg-decograph-red transition-opacity duration-300 flex flex-col items-center justify-center text-white pointer-events-none ${
+        isRevealed ? "opacity-100" : "opacity-0"
+      }`}>
         <BuildingIcon />
         <span className="portfolio-title1 mt-4">{category || "Category"}</span>
         <span className="portfolio-title2 mt-1">{title || "Project Name"}</span>
@@ -109,6 +136,7 @@ const IMAGES_PER_GRID = 10;
 
 // Bento Grid component - always maintains full structure
 const BentoGrid = ({ works, startIndex }) => {
+  const [revealedIndex, setRevealedIndex] = useState(null);
   const gridWorks = works.slice(startIndex, startIndex + IMAGES_PER_GRID);
   
   // Get image at specific position or null
@@ -134,7 +162,14 @@ const BentoGrid = ({ works, startIndex }) => {
       >
         {[0, 1, 2].map((pos) => {
           const work = getWork(pos);
-          return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
+          return work ? (
+            <PortfolioItem 
+              key={pos} 
+              {...work} 
+              isRevealed={revealedIndex === pos}
+              onReveal={() => setRevealedIndex(pos)}
+            />
+          ) : <div key={pos} className="bg-gray-50/50" />;
         })}
       </div>
 
@@ -148,7 +183,14 @@ const BentoGrid = ({ works, startIndex }) => {
       >
         {[3, 4, 5].map((pos) => {
           const work = getWork(pos);
-          return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
+          return work ? (
+            <PortfolioItem 
+              key={pos} 
+              {...work} 
+              isRevealed={revealedIndex === pos}
+              onReveal={() => setRevealedIndex(pos)}
+            />
+          ) : <div key={pos} className="bg-gray-50/50" />;
         })}
       </div>
 
@@ -167,7 +209,14 @@ const BentoGrid = ({ works, startIndex }) => {
         >
           {[6, 7].map((pos) => {
             const work = getWork(pos);
-            return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
+            return work ? (
+              <PortfolioItem 
+                key={pos} 
+                {...work} 
+                isRevealed={revealedIndex === pos}
+                onReveal={() => setRevealedIndex(pos)}
+              />
+            ) : <div key={pos} className="bg-gray-50/50" />;
           })}
         </div>
 
@@ -178,7 +227,14 @@ const BentoGrid = ({ works, startIndex }) => {
         >
           {[8, 9].map((pos) => {
             const work = getWork(pos);
-            return work ? <PortfolioItem key={pos} {...work} /> : <div key={pos} className="bg-gray-50/50" />;
+            return work ? (
+              <PortfolioItem 
+                key={pos} 
+                {...work} 
+                isRevealed={revealedIndex === pos}
+                onReveal={() => setRevealedIndex(pos)}
+              />
+            ) : <div key={pos} className="bg-gray-50/50" />;
           })}
         </div>
       </div>
@@ -189,6 +245,7 @@ const BentoGrid = ({ works, startIndex }) => {
 export default function PortfolioPage() {
   const [isSubscribeOpen, setIsSubscribeOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [mobileRevealedIndex, setMobileRevealedIndex] = useState(null);
   const { data: allProjects = [], isLoading } = useProjects();
   
   // Calculate number of grids needed
@@ -230,7 +287,11 @@ export default function PortfolioPage() {
               <div className="md:hidden space-y-3">
                 {allProjects.map((project, idx) => (
                   <div key={idx} className="h-64">
-                   <PortfolioItem {...project} />
+                   <PortfolioItem 
+                     {...project} 
+                     isRevealed={mobileRevealedIndex === idx}
+                     onReveal={() => setMobileRevealedIndex(idx)}
+                   />
                   </div>
                 ))}
               </div>
