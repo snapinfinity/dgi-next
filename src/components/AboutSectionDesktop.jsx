@@ -56,7 +56,7 @@ export default function AboutSectionDesktop() {
         className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-decograph-red"
       >
         <div className="relative max-w-7xl mx-auto text-center px-6 lg:px-24">
-          <p ref={textRef} className="font-serif text-xl md:text-2xl lg:text-3xl xl:text-4xl leading-relaxed">
+          <p ref={textRef} className="font-serif text-lg md:text-xl lg:text-2xl xl:text-3xl leading-relaxed">
             <span>{splitText(text1)}</span>
             {" "}
             <span>{splitText(text2)}</span>
