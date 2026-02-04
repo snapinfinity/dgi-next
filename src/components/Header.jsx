@@ -168,7 +168,7 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
               <img 
                 src={logoSrc}
                 alt="Decograph Interiors" 
-                className="w-[75px] md:w-[98px] lg:w-[120px] h-auto"
+                className="w-[60px] md:w-[80px] lg:w-[100px] h-auto"
               />
             </Link>
           )}
