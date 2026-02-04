@@ -119,46 +119,46 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-white md:bg-decograph-red min-h-screen">
+      <div className="bg-white lg:bg-decograph-red min-h-screen">
         {/* Header/Navigation */}
-        <Header isScrolled={isScrolled} onSubscribeClick={openSubscribe} isDark={isNavDark} isWhiteBg={isNavWhiteBg} />
+        <Header isScrolled={isScrolled} onSubscribeClick={openSubscribe} isDark={isNavDark} isWhiteBg={isNavWhiteBg} hideLogo />
 
         {/* Hero Section with Carousel (Fixed) - Desktop Only */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <HeroCarousel />
         </div>
         
         {/* Animated Logo Overlay - Desktop Only */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <AnimatedLogo isRed={isLogoRed} />
         </div>
 
         {/* Content stack that slides up */}
-        <div className="relative z-10 md:mt-[100vh]">
+        <div className="relative z-10 lg:mt-[100vh]">
           {/* Part 1: Gradient Part (Full Screen) - Desktop Only */}
           <div 
-            className="hidden md:block h-screen w-full"
+            className="hidden lg:block h-screen w-full"
             style={{
               background: 'linear-gradient(to bottom, rgba(114, 27, 36, 0), rgba(114, 27, 36, 0.015) 8.8%, rgba(114, 27, 36, 0.059) 17.4%, rgba(114, 27, 36, 0.121) 24.8%, rgba(114, 27, 36, 0.193) 31.3%, rgba(114, 27, 36, 0.269) 37.2%, rgba(114, 27, 36, 0.348) 42.8%, rgba(114, 27, 36, 0.429) 48.3%, rgba(114, 27, 36, 0.509) 53.8%, rgba(114, 27, 36, 0.589) 59.4%, rgba(114, 27, 36, 0.667) 65.2%, rgba(114, 27, 36, 0.743) 71.3%, rgba(114, 27, 36, 0.815) 77.8%, rgba(114, 27, 36, 0.883) 84.7%, rgba(114, 27, 36, 0.945) 92.1%, rgb(114, 27, 36))'
             }}
           />
           
           {/* Part 2: About Section Desktop (Sticky with spacer) */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <AboutSectionDesktop />
           </div>
 
           {/* Part 3: Transition Gradient (White fade) - Desktop Only */}
           <div 
             ref={whiteGradientRef}
-            className="hidden md:block h-screen w-full relative z-10 md:-mt-[200vh]"
+            className="hidden lg:block h-screen w-full relative z-10 lg:-mt-[200vh]"
             style={{
               backgroundImage: 'linear-gradient(to top, hsl(0, 0%, 100%), hsla(0, 0%, 100%, 0.94505) 7.9%, hsla(0, 0%, 100%, 0.88294) 15.3%, hsla(0, 0%, 100%, 0.81522) 22.2%, hsla(0, 0%, 100%, 0.7426) 28.7%, hsla(0, 0%, 100%, 0.66692) 34.8%, hsla(0, 0%, 100%, 0.58891) 40.6%, hsla(0, 0%, 100%, 0.50925) 46.2%, hsla(0, 0%, 100%, 0.42866) 51.7%, hsla(0, 0%, 100%, 0.34817) 57.2%, hsla(0, 0%, 100%, 0.2693) 62.8%, hsla(0, 0%, 100%, 0.19309) 68.7%, hsla(0, 0%, 100%, 0.12126) 75.2%, hsla(0, 0%, 100%, 0.05882) 82.6%, hsla(0, 0%, 100%, 0.01457) 91.2%, hsla(0, 0%, 100%, 0))'
             }}
           />
 
           {/* Part 4: Portfolio Gallery (white background) - scrolls over About */}
-          <div ref={portfolioRef} className="relative z-10 pt-20 md:pt-0">
+          <div ref={portfolioRef} className="relative z-10 pt-20 lg:pt-0">
             <PortfolioGrid />
 
             {/* Footer */}

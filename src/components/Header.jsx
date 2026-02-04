@@ -12,7 +12,7 @@ const navLinks = [
   { href: "/about#clientele", label: "Clientele" },
 ];
 
-export default function Header({ isScrolled, onSubscribeClick, isDark = false, isWhiteBg = false, hideGradient = false }) {
+export default function Header({ isScrolled, onSubscribeClick, isDark = false, isWhiteBg = false, hideGradient = false, hideLogo = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const pathname = usePathname();
@@ -163,13 +163,15 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
           </ul>
 
           {/* Center Logo (Desktop) */}
-          <Link href="/" className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-            <img 
-              src={logoSrc}
-              alt="Decograph Interiors" 
-              className="h-12 w-auto"
-            />
-          </Link>
+          {!hideLogo && (
+            <Link href="/" className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+              <img 
+                src={logoSrc}
+                alt="Decograph Interiors" 
+                className="w-[75px] md:w-[98px] lg:w-[120px] h-auto"
+              />
+            </Link>
+          )}
 
           {/* Right - Contact (Desktop) */}
           <Link
@@ -210,6 +212,14 @@ export default function Header({ isScrolled, onSubscribeClick, isDark = false, i
             </Link>
           </li>
         </ul>
+        
+        {/* Powered by Snapinfinity */}
+        <div className="absolute bottom-8 left-6 right-6">
+          <span className="text-xs text-gray-400">
+            Powered by{' '}
+            <a href="https://snapinfinity.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-decograph-red transition-colors">Snapinfinity</a>
+          </span>
+        </div>
       </div>
       
       {/* Mobile Gradient - Always Visible (Hidden when menu is open or hideGradient is true) */}

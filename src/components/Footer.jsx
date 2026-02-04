@@ -152,10 +152,6 @@ export default function Footer({ onSubscribeClick, showBorder = false }) {
             <Link href="/privacy-policy" className="hover:text-decograph-red transition-colors">
               Privacy Policy
             </Link>
-            <span className="text-gray-400">
-              Powered by{' '}
-              <a href="https://snapinfinity.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-decograph-red transition-colors">Snapinfinity</a>
-            </span>
             <Link href="/terms-conditions" className="hover:text-decograph-red transition-colors">
               Terms & Conditions
             </Link>
