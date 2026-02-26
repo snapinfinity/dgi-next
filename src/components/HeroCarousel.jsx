@@ -87,13 +87,29 @@ export default function HeroCarousel() {
   const [isPaused, setIsPaused] = useState(false);
 
   return (
-    <section className="fixed inset-0 h-screen bg-decograph-red overflow-hidden z-0">
+    <section className="fixed inset-0 h-screen bg-black overflow-hidden z-0">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/images/dgi-hero.mp4" type="video/mp4" />
+      </video>
+      
+      {/* Dark Overlay over Video */}
+      <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
+
       {/* Carousel Container */}
-      <div className="h-full flex flex-col justify-evenly">
+      <div className="relative z-10 h-full flex flex-col justify-evenly pointer-events-none">
+        {/*
         <CarouselRow rowIndex={0} isPaused={isPaused} setIsPaused={setIsPaused} />
         <CarouselRow rowIndex={1} isPaused={isPaused} setIsPaused={setIsPaused} />
         <CarouselRow rowIndex={2} isPaused={isPaused} setIsPaused={setIsPaused} />
         <CarouselRow rowIndex={3} isPaused={isPaused} setIsPaused={setIsPaused} />
+        */}
       </div>
     </section>
   );

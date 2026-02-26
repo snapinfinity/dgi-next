@@ -38,7 +38,7 @@ export default function AnimatedLogo({ isRed = false }) {
   const logoSrc = isRed ? "/images/logo-red.png" : "/images/logo.png";
   const shadowStyle = isRed 
     ? {} 
-    : { filter: 'drop-shadow(0 0 40px rgba(237, 53, 56, 0.6)) drop-shadow(0 0 80px rgba(237, 53, 56, 0.4))' };
+    : { };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
