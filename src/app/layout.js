@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://decograph.ae"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://www.decographinteriors.com"),
   title: "Decograph Interiors | Interior Design & Fit-Out Studio",
   description:
     "Decograph Interior Design Studio is a full-service interior design and fit-out company specializing in residential, commercial, retail, and hospitality spaces.",
@@ -29,11 +30,11 @@ export const metadata = {
     title: "Decograph Interiors | Interior Design & Fit-Out Studio",
     description:
       "Decograph Interior Design Studio is a full-service interior design and fit-out company specializing in residential, commercial, retail, and hospitality spaces.",
-    url: "https://decograph.ae",
+    url: "https://www.decographinteriors.com",
     siteName: "Decograph Interiors",
     images: [
       {
-        url: "/android-chrome-192x192.png", // Ensure this image exists or is replaced
+        url: "/images/og-logo.jpg", // Ensure this image exists or is replaced
         width: 1200,
         height: 630,
       },
@@ -46,7 +47,7 @@ export const metadata = {
     title: "Decograph Interiors | Interior Design & Fit-Out Studio",
     description:
       "Decograph Interior Design Studio is a full-service interior design and fit-out company specializing in residential, commercial, retail, and hospitality spaces.",
-    images: ["/android-chrome-192x192.png"],
+    images: ["/images/og-logo.jpg"],
   },
 };
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }) {
         <QueryProvider>
           {children}
         </QueryProvider>
+        <WhatsAppButton />
       </body>
     </html>
   );
