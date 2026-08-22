@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -11,6 +11,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata = {
@@ -55,7 +62,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth overscroll-none">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overscroll-none`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased overscroll-none`}
       >
         <QueryProvider>
           {children}

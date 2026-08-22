@@ -1,6 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+
+const heroVideos = [
+  "/images/DRESSING_01%20(1).webm",
+  "/images/DRESSING_02.webm",
+  "/images/DRESSING_03.webm",
+  "/images/DRESSING_04.webm",
+  "/images/L%2001.webm",
+  "/images/L%2002.webm",
+  "/images/L%2003.webm",
+  "/images/sheraton%20club%20lounge_01.webm",
+  "/images/sheraton%20club%20lounge_02.webm",
+  "/images/sheraton%20club%20lounge_03.webm",
+  "/images/sheraton%20club%20lounge_04.webm",
+];
 
 // Hero images organized by row (7 images per row)
 const heroImageRows = [
@@ -85,18 +99,34 @@ const CarouselRow = ({ rowIndex, isPaused, setIsPaused }) => {
 
 export default function HeroCarousel() {
   const [isPaused, setIsPaused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const videoRef = useRef(null);
+
+  // When the index changes, load and play the new video
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.src = heroVideos[currentIndex];
+    video.load();
+    video.play().catch(() => {});
+  }, [currentIndex]);
+
+  const handleEnded = () => {
+    setCurrentIndex((prev) => (prev + 1) % heroVideos.length);
+  };
 
   return (
     <section className="fixed inset-0 h-screen bg-black overflow-hidden z-0">
-      {/* Background Video */}
+      {/* Background Video — cycles through all 11 clips */}
       <video
+        ref={videoRef}
         autoPlay
-        loop
         muted
         playsInline
+        onEnded={handleEnded}
         className="absolute inset-0 w-full h-full object-cover z-0"
       >
-        <source src="/images/dgi-hero.mp4" type="video/mp4" />
+        <source src={heroVideos[0]} type="video/webm" />
       </video>
       
       {/* Dark Overlay over Video */}

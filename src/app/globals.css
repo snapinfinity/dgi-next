@@ -363,6 +363,11 @@
   font-weight: 400;
 }
 
+/* Century Gothic font stack */
+.century-gothic {
+  font-family: "Century Gothic", "Futura", CenturyGothic, AppleGothic, "Trebuchet MS", sans-serif;
+}
+
 /* About Page Heading Style */
 .about-heading {
   font-family: "Deuterium Variable", sans-serif;

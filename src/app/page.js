@@ -10,6 +10,9 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import AboutSectionDesktop from "@/components/AboutSectionDesktop";
 import AboutSectionMobile from "@/components/AboutSectionMobile";
 import PortfolioGrid from "@/components/PortfolioGrid";
+import CreativeSection from "@/components/CreativeSection";
+import OurProcessSection from "@/components/OurProcessSection";
+import TrustStrip from "@/components/TrustStrip";
 import Footer from "@/components/Footer";
 import PortalPopup from "@/components/PortalPopup";
 import SubscribeModal from "@/components/SubscribeModal";
@@ -18,12 +21,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavLogoVisible, setIsNavLogoVisible] = useState(false);
   const [isSubscribeOpen, setSubscribeOpen] = useState(false);
   const [isNavDark, setIsNavDark] = useState(false);
   const [isNavWhiteBg, setIsNavWhiteBg] = useState(false);
   const [isLogoRed, setIsLogoRed] = useState(false);
   const whiteGradientRef = useRef(null);
   const portfolioRef = useRef(null);
+  const logoTimerRef = useRef(null);
 
   useEffect(() => {
     const handleWheel = (e) => {
@@ -41,8 +46,8 @@ export default function Home() {
   }, [isScrolled]);
 
   useEffect(() => {
+    clearTimeout(logoTimerRef.current);
     if (isScrolled) {
-      // Animate scroll to content using GSAP
       const targetScroll = window.innerHeight;
       gsap.to(window, {
         scrollTo: { y: targetScroll, autoKill: false },
@@ -50,14 +55,18 @@ export default function Home() {
         ease: "none",
         onComplete: () => {
           ScrollTrigger.refresh();
-        }
+          // Wait for AnimatedLogo scrub (0.6s lag) + phase-3 fade to fully finish
+          // before revealing the static navbar logo
+          logoTimerRef.current = setTimeout(() => setIsNavLogoVisible(true), 400);
+        },
       });
     } else {
-      // Animate scroll back to top
+      // Hide navbar logo immediately so AnimatedLogo can reverse cleanly
+      setIsNavLogoVisible(false);
       gsap.to(window, {
         scrollTo: { y: 0, autoKill: false },
         duration: 0.6,
-        ease: "none"
+        ease: "none",
       });
     }
   }, [isScrolled]);
@@ -121,7 +130,7 @@ export default function Home() {
     <>
       <div className="bg-white lg:bg-decograph-red min-h-screen">
         {/* Header/Navigation */}
-        <Header isScrolled={isScrolled} onSubscribeClick={openSubscribe} isDark={isNavDark} isWhiteBg={isNavWhiteBg} hideLogo />
+        <Header onSubscribeClick={openSubscribe} isDark={isNavDark} isWhiteBg={isNavWhiteBg} hideLogo={!isNavLogoVisible} />
 
         {/* Hero Section with Carousel (Fixed) - Desktop Only */}
         <div className="hidden lg:block">
@@ -130,7 +139,7 @@ export default function Home() {
         
         {/* Animated Logo Overlay - Desktop Only */}
         <div className="hidden lg:block">
-          <AnimatedLogo isRed={isLogoRed} />
+          <AnimatedLogo />
         </div>
 
         {/* Content stack that slides up */}
@@ -159,7 +168,17 @@ export default function Home() {
 
           {/* Part 4: Portfolio Gallery (white background) - scrolls over About */}
           <div ref={portfolioRef} className="relative z-10 pt-20 lg:pt-0">
+            {/* Projects carousel */}
             <PortfolioGrid />
+
+            {/* Creative scroll-reveal section */}
+            <CreativeSection />
+
+            {/* Our Process */}
+            <OurProcessSection />
+
+            {/* Trust Strip */}
+            <TrustStrip />
 
             {/* Footer */}
             <Footer onSubscribeClick={openSubscribe} />
