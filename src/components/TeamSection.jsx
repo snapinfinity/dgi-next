@@ -2,17 +2,17 @@
 
 import Image from "next/image";
 
-// PLACEHOLDER DATA: replace names, roles and photos with the real team.
 // Set `photo` to an image path (e.g. "/images/team/jane.webp") to replace the placeholder.
 const team = [
-  { name: "Team Member", role: "Founder & Managing Director", photo: null },
-  { name: "Team Member", role: "Design Director", photo: null },
-  { name: "Team Member", role: "Lead Interior Designer", photo: null },
-  { name: "Team Member", role: "Project Manager", photo: null },
-  { name: "Team Member", role: "MEP Engineer", photo: null },
-  { name: "Team Member", role: "Site Engineer", photo: null },
-  { name: "Team Member", role: "Joinery Supervisor", photo: null },
-  { name: "Team Member", role: "Procurement Manager", photo: null },
+  { name: "Jarish M", role: "Founder", photo: null },
+  { name: "Safwan Sadique", role: "Director", photo: null },
+  { name: "Mohamed Shidin", role: "Project Manager", photo: null },
+  { name: "Ayesha Nimrah", role: "Project Coordinator", photo: null },
+  { name: "Ranjul Keloth", role: "Site Manager", photo: null },
+  { name: "Aghil Insaf", role: "Design Director", photo: null },
+  { name: "Mohammed Ajmal", role: "Lead Interior Designer", photo: null },
+  { name: "Nawab Shah", role: "Site Engineer", photo: null },
+  { name: "Vijith Vijayan", role: "Site Supervisor", photo: null },
 ];
 
 function PhotoPlaceholder() {
